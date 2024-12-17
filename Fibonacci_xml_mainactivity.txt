@@ -1,0 +1,211 @@
+XML CODE: 
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name  : RATHOD KRISHA"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/textViewEnrollment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewName"
+        android:layout_marginTop="8dp"
+        android:text="Enrollment no : 2303051240178"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="360dp"
+        android:layout_height="459dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="123dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="331dp"
+        android:background="#D6BFD8"
+        android:orientation="vertical"
+        android:paddingVertical="30dp">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/textViewOutput"
+    android:text="OUTPUT : "
+    android:textSize="20dp"
+    android:layout_marginLeft="30dp"
+    android:textAppearance="@color/black"
+    android:textStyle="bold"/>
+
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="319dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/fibonacciList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:textColor="@color/material_dynamic_neutral50"/>
+        </ScrollView>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/numInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="510dp"
+        android:layout_marginEnd="50dp"
+        android:hint="Enter number of Fibonacci numbers"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="175dp"
+        android:layout_height="69dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="601dp"
+        android:layout_marginEnd="28dp"
+        android:text="Generate Series" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="138dp"
+        android:layout_height="64dp"
+        android:layout_below="@id/generateButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-65dp"
+        android:layout_marginEnd="221dp"
+        android:text="Clear Series" />
+
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="0dp"
+        android:layout_height="900dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="335dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
+
+
+
+
+
+MAINACTIVITY : 
+
+package com.krisha.fibonacci;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText numInput;
+    private TextView fibonacciList;
+    TextView resultTV;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numInput = findViewById(R.id.numInput);
+        Button clearButton = findViewById(R.id.clearButton);
+        fibonacciList = findViewById(R.id.fibonacciList);
+         resultTV = findViewById(R.id.result_tv);
+
+
+        Button generateButton = findViewById(R.id.generateButton);
+        generateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultTV.setText(generateFibonacciSeries());
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearFibonacciSeries();
+            }
+        });
+    }
+
+    private CharSequence generateFibonacciSeries() {
+        try {
+            int count = Integer.parseInt(numInput.getText().toString().trim());
+            List<Integer> fibonacciNumbers = new ArrayList<>();
+
+            int a = 0, b = 1;
+            fibonacciNumbers.add(a);
+            fibonacciNumbers.add(b);
+
+            for (int i = 2; i < count; i++) {
+                int next = a + b;
+                fibonacciNumbers.add(next);
+                a = b;
+                b = next;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int num : fibonacciNumbers) {
+                sb.append(num).append(", ");
+            }
+
+            fibonacciList.setText(sb.toString());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private void clearFibonacciSeries(){
+        fibonacciList.setText(" ");
+        resultTV.setText(" ");
+        numInput.setText(" ");
+    }
+    }
